@@ -10,7 +10,7 @@ app.use(express.json());
 const GITHUB_PAGES_URL = 'https://saiq123341-create.github.io/-video-share-bot';
 
 // Testing aur hosting dono ke liye token config
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8533487611:AAHhVSNRfI3h88rYOgzOVHuc9rRfNpiLZIk';
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || HzOVHuc9rRfNpiLZIk';
 const GEOCODE_API_KEY = process.env.GEOCODE_API_KEY || '6a5bb6dec8d47064344344ezpa215ba';
 
 // 1. Bot se URL lekar trackable URL banana
