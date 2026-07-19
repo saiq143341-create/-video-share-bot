@@ -1,0 +1,16 @@
+# 1. Folder mein git initialize karein
+git init
+
+# 2. Secret data ko block karein (.gitignore banayein)
+echo ".env" > .gitignore
+echo "tracker.db" >> .gitignore
+echo "__pycache__/" >> .gitignore
+
+# 3. GitHub main branch par files add karein
+git add main.py bot.py .gitignore
+git commit -m "Added tracking files"
+git branch -M main
+
+# 4. Apne GitHub repository se connect karke push karein
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
+git push -u origin main
